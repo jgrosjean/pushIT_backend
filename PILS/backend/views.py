@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Button, Action, LinkButtonAction, ObjectConnected, AllObject
+import json
+from .models import Button, Action, LinkButtonAction, ObjectConnected, AllObject, ListView
 
 # Create your views here.
 
@@ -99,6 +100,9 @@ def listActionByObjectConnected(request, id):                       #ne fonction
 def addLinkButtonAction(request, id_button, id_action):
     button=Button.objects.filter(id=format(id_button))
     action=Action.objects.filter(id=format(id_action))
+    linkButtonAction = LinkButtonAction.objects.filter(id_button=format(id_button), id_action=format(id_action))
+    if linkButtonAction :
+        return HttpResponse("ce bouton fait deja cette action")
     if button :
         if action :
             p = LinkButtonAction(id_button=format(id_button), id_action=format(id_action))
@@ -114,3 +118,82 @@ def listLinkButtonAction(request):
     listObject=list(linkbuttonAction)
     return JsonResponse(listObject, safe=False)
 
+def listLinkButtonActionByButton(request, id_button):
+    linkButtonAction = LinkButtonAction.objects.filter(id_button=format(id_button)).values()
+    if linkButtonAction:
+        listObject=list(linkButtonAction)
+        return JsonResponse(listObject, safe=False)
+    else:
+        return HttpResponse("ERREUR : pas d'ation pour ce boutton")
+
+
+def listView(request):
+    obj = ListView()
+
+    data = {
+        'name': 'dzdzd',
+        'location': 'Finland',
+        'is_active': True,
+        'count': 28
+    }
+
+    dump = json.dumps(data)
+    return HttpResponse(dump, content_type='application/json')
+
+    '''obj = ListView()
+    obj.nom="jojojojo"
+    obj.prenom='prenooom'
+    listObject=list(obj)
+    return JsonResponse(listObject, safe=False)
+    '''
+
+'''
+
+def listView(request):
+
+    file = open("test.txt","w")
+
+    buttons_id = Button.objects.all().values_list('id', flat=True)
+
+    buttons_name = Button.objects.all().values_list('name', flat=True)
+
+
+
+    actions_idButton = LinkButtonAction.objects.all().values_list('id_button', flat=True)
+
+    actions_idAction = LinkButtonAction.objects.all().values_list('id_action', flat=True)
+
+
+
+    action_idAction = Action.objects.all().values_list('id', flat=True)
+
+    action_idObject = Action.objects.all().values_list('id_objet_connected', flat=True)
+
+    action_desc = Action.objects.all().values_list('description', flat=True)
+
+
+
+    listButton = []
+
+    for i in range(len(buttons_id)):
+
+        listAction = []
+
+        for j in range(len(actions_idButton)):
+
+            if buttons_id[i] == actions_idButton[j]:
+
+                for k in range(len(action_desc)):
+
+                    if action_idAction[k] == actions_idAction[j]:
+
+                        listAction.append(viewAction(action_idAction[k], action_idObject[k], action_desc[k]))
+
+        listButton.append(viewButton(buttons_id[i], buttons_name[i], listAction))
+
+    file.write(str(listButton[0]))
+
+    file.close()
+
+    return HttpResponse(listButton)
+    '''

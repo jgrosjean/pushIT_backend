@@ -35,3 +35,10 @@ class AllObject(models.Model):
     def __str__(self):
         return '%s %s ' % (self.brand, self.reference)
 
+class ListView : 
+    def _init_(self):
+        self.nom="default_nom"
+        self.prenom="default_prenom"
+
+    def getNom(self):
+        return self.nom

@@ -21,10 +21,11 @@ urlpatterns = [
     path('listAction', views.listAction, name='listAction'),
     path('listActionByObjectConnected/<id>', views.listActionByObjectConnected, name='listActionByObjectConnected'),
 
-
-
     path('addLinkButtonAction/<id_button>/<id_action>', views.addLinkButtonAction, name='addLinkButtonAction'),
     path('listLinkButtonAction', views.listLinkButtonAction, name='listLinkButtonAction'),
+    path('listLinkButtonActionByButton/<id_button>', views.listLinkButtonActionByButton, name='listLinkButtonActionByButton'),
+
+    path('listView', views.listView, name='listView'),
 
 
 ]   

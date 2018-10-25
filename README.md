@@ -1,4 +1,4 @@
-# PILS_backend
+# izPILS_backend
 
 ## Initialisation de votre repo local
 
